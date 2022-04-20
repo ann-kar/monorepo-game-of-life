@@ -4,35 +4,65 @@ import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 import { useEffect, useState } from 'react';
 import Cell from '../components/cell/cell';
 
+const isBoardEmpty = (board: number[][]): boolean => {
+  return board
+    .map((row) => {
+      return row.every((cell) => cell === 0);
+    })
+    .every((result) => result === true);
+};
+
 export function Index() {
   const [game, setGame] = useState<any>();
   const [board, setBoard] = useState<number[][]>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
 
   useEffect(() => {
     const g = new GameOfLife(10, 10);
     setGame(g);
   }, []);
 
-  useEffect(() => {
-    if (game) {
-      const currentBoard = game.getBoard();
-      setBoard(currentBoard);
-      console.log(currentBoard);
-    }
-  }, [game]);
-
-  const setCell = (row: number, col: number) => {
-    game.setCell(row, col);
-  };
-  const startGame = () => {
-    setHasStarted(true);
-  };
-
   const tick = () => {
     game.tick();
     let currentBoard = game.getBoard();
     setBoard(currentBoard);
+  };
+
+  useEffect(() => {
+    if (game) {
+      const currentBoard = game.getBoard();
+      setBoard(currentBoard);
+    }
+  }, [game]);
+
+  useEffect(() => {
+    if (board && isBoardEmpty(board)) {
+      console.log('board empty');
+      setIsEmpty(true);
+    }
+  }, [board]);
+
+  useEffect(() => {
+    if (isAutoplayOn) {
+      const interval = setInterval(() => {
+        tick();
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [isAutoplayOn, isEmpty]);
+
+  const setCell = (row: number, col: number) => {
+    game.setCell(row, col);
+  };
+
+  const startGame = () => {
+    setHasStarted(true);
+  };
+
+  const autotick = () => {
+    setIsAutoplayOn(!isAutoplayOn);
   };
 
   return (
@@ -65,11 +95,17 @@ export function Index() {
               );
             })}
           </div>
-          <button onClick={startGame} className={styles.button}>
+          <button
+            onClick={startGame}
+            className={`${styles.button} ${hasStarted && styles.activeButton}`}
+          >
             start
           </button>
           <button onClick={tick} className={styles.button}>
             tick
+          </button>
+          <button onClick={autotick} className={styles.button}>
+            autoplay
           </button>
         </div>
       </div>
