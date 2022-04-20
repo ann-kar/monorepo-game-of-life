@@ -17,10 +17,11 @@ const isBoardEmpty = (board: Board): boolean => {
 
 export function Index() {
   const [game, setGame] = useState<any>();
-  const [board, setBoard] = useState<Board>();
+  const [board, setBoard] = useState<number[][]>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
+  const [boardId, setBoardId] = useState<string>();
 
   useEffect(() => {
     const g = new GameOfLife(10, 10);
@@ -28,9 +29,14 @@ export function Index() {
   }, []);
 
   const tick = () => {
-    game.tick();
-    let currentBoard = game.getBoard();
-    setBoard(currentBoard);
+    console.log(boardId);
+   const res = Api.sendTick(boardId);
+
+    res.then((res) => console.log(res));
+    // res.then((res) => setBoard(res.board));
+    // game.tick();
+    // let currentBoard = game.getBoard();
+    // setBoard(currentBoard);
   };
 
   useEffect(() => {
@@ -41,9 +47,12 @@ export function Index() {
   }, [game]);
 
   useEffect(() => {
-    if (board) {
+    if (board && !boardId) {
       const res = Api.sendBoard(board);
-      res.then((res) => console.log('response: ', res));
+      res.then((res) => {
+        console.log(res.id);
+        setBoardId(res.id);
+      });
     }
   }, [board]);
 
@@ -64,10 +73,16 @@ export function Index() {
   }, [isAutoplayOn, isEmpty]);
 
   const setCell = (row: number, col: number) => {
-    game.setCell(row, col);
+
+  if (board[row][col] == 1) {
+      board[row][col] = 0;
+    } else {
+      board[row][col] = 1;
+    }
   };
 
   const startGame = () => {
+
     setHasStarted(true);
   };
 
