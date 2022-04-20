@@ -3,6 +3,7 @@ import styles from './index.module.css';
 import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 import { useEffect, useState } from 'react';
 import Cell from '../components/cell/cell';
+import Link from 'next/link';
 
 const isBoardEmpty = (board: number[][]): boolean => {
   return board
@@ -71,6 +72,11 @@ export function Index() {
     setHasStarted(true);
   }
 
+  const restart = () => {
+    setHasStarted(false);
+    const g = new GameOfLife(10, 10);
+    setGame(g);
+  }
 
   const autotick = () => {
     setIsAutoplayOn(!isAutoplayOn);
@@ -123,6 +129,9 @@ export function Index() {
           </button>
           <button onClick={autotick} className={styles.button}>
             autoplay
+          </button>
+          <button onClick={restart} className={styles.button}>
+            restart
           </button>
         </div>
       </div>
