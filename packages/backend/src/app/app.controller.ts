@@ -4,7 +4,9 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
+  Query,
 } from '@nestjs/common';
 
 import { AppService } from './app.service';
@@ -14,6 +16,11 @@ import { GetTickDto } from './dto/getTick.dto';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
+
+  @Get('board/:size')
+  generateBoard(@Param() param: { size: string }) {
+    return this.appService.generateBoard(param);
+  }
 
   @Post('board')
   createBoard(@Body() createBoardDto: CreateBoardDto) {
