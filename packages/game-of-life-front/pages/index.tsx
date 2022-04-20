@@ -61,6 +61,17 @@ export function Index() {
     setHasStarted(true);
   };
 
+  const startWithDefault = () => {
+    game.setCell(1, 1);
+    game.setCell(1, 2);
+    game.setCell(2, 2);
+    game.setCell(3, 2);
+    game.setCell(4, 2);
+    game.setCell(4, 3);
+    setHasStarted(true);
+  }
+
+
   const autotick = () => {
     setIsAutoplayOn(!isAutoplayOn);
   };
@@ -100,6 +111,12 @@ export function Index() {
             className={`${styles.button} ${hasStarted && styles.activeButton}`}
           >
             start
+          </button>
+          <button
+            onClick={startWithDefault}
+            className={`${styles.button} ${hasStarted && styles.activeButton}`}
+          >
+            start with default pattern
           </button>
           <button onClick={tick} className={styles.button}>
             tick
