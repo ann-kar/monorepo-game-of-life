@@ -1,10 +1,12 @@
-import styles from './index.module.css';
-
-import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 import { useEffect, useState } from 'react';
-import Cell from '../components/cell/cell';
+import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 
-const isBoardEmpty = (board: number[][]): boolean => {
+import styles from './index.module.css';
+import Cell from '../components/cell/cell';
+import { Api } from '../services/services';
+import { Board } from '../interfaces/interfaces';
+
+const isBoardEmpty = (board: Board): boolean => {
   return board
     .map((row) => {
       return row.every((cell) => cell === 0);
@@ -14,7 +16,7 @@ const isBoardEmpty = (board: number[][]): boolean => {
 
 export function Index() {
   const [game, setGame] = useState<any>();
-  const [board, setBoard] = useState<number[][]>();
+  const [board, setBoard] = useState<Board>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
@@ -36,6 +38,13 @@ export function Index() {
       setBoard(currentBoard);
     }
   }, [game]);
+
+  useEffect(() => {
+    if (board) {
+      const res = Api.sendBoard(board);
+      res.then((res) => console.log("response: ", res));
+    }
+  }, [board]);
 
   useEffect(() => {
     if (board && isBoardEmpty(board)) {
