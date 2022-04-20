@@ -5,6 +5,7 @@ import styles from './index.module.css';
 import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
 import { Board } from '../interfaces/interfaces';
+import Button from '../components/button/button';
 
 const isBoardEmpty = (board: Board): boolean => {
   return board
@@ -42,7 +43,7 @@ export function Index() {
   useEffect(() => {
     if (board) {
       const res = Api.sendBoard(board);
-      res.then((res) => console.log("response: ", res));
+      res.then((res) => console.log('response: ', res));
     }
   }, [board]);
 
@@ -118,27 +119,11 @@ export function Index() {
           })}
         </div>
         <nav>
-          <button
-            onClick={startGame}
-            className={`${styles.button} ${hasStarted && styles.activeButton}`}
-          >
-            start
-          </button>
-          <button
-            onClick={startWithDefault}
-            className={`${styles.button} ${hasStarted && styles.activeButton}`}
-          >
-            start with default
-          </button>
-          <button onClick={tick} className={styles.button}>
-            tick
-          </button>
-          <button onClick={autotick} className={styles.button}>
-            autoplay
-          </button>
-          <button onClick={restart} className={styles.button}>
-            restart
-          </button>
+          <Button onClick={startGame} label={'choose pattern & start'} />
+          <Button onClick={startWithDefault} label={'start with default'} />
+          <Button onClick={tick} label={'tick'} />
+          <Button onClick={autotick} label={'autoplay'} />
+          <Button onClick={restart} label={'restart'} />
         </nav>
       </div>
     </div>
