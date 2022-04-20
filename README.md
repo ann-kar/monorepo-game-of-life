@@ -16,8 +16,6 @@ nx test game-of-life-algr
 
 nx build game-of-life-algr
 
-
-
 # GameoflifeNrwl
 
 This project was generated using [Nx](https://nx.dev).

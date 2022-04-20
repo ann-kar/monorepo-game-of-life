@@ -17,7 +17,8 @@
     "paths": {
       "@gameoflife-nrwl/game-of-life-algr": [
         "packages/game-of-life-algr/src/index.ts"
-      ]
+      ],
+      "@gol-monorepo/game-of-life": ["packages/game-of-life/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
