@@ -1,0 +1,28 @@
+{
+  "root": "packages/game-of-life-front-e2e",
+  "sourceRoot": "packages/game-of-life-front-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/game-of-life-front-e2e/cypress.json",
+        "devServerTarget": "game-of-life-front:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "game-of-life-front:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/game-of-life-front-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["game-of-life-front"]
+}

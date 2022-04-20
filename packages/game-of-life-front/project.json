@@ -1,0 +1,54 @@
+{
+  "root": "packages/game-of-life-front",
+  "sourceRoot": "packages/game-of-life-front",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "packages/game-of-life-front",
+        "outputPath": "dist/packages/game-of-life-front"
+      },
+      "configurations": {
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "options": {
+        "buildTarget": "game-of-life-front:build",
+        "dev": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "game-of-life-front:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "game-of-life-front:build:production"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/game-of-life-front"],
+      "options": {
+        "jestConfig": "packages/game-of-life-front/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/game-of-life-front/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": []
+}
