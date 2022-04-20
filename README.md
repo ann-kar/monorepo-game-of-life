@@ -1,3 +1,21 @@
+# How to use
+
+## Frontend app: game-of-life-front package
+
+- Serve the app:
+
+nx serve game-of-life-front
+
+## Algorithm: game-of-life-algr package
+
+- Test the algorithm:
+
+nx test game-of-life-algr
+
+- Build:
+
+nx build game-of-life-algr
+
 
 
 # GameoflifeNrwl
