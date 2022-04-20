@@ -43,39 +43,27 @@ export function Index() {
             <h1>Game of life</h1>
           </div>
           <div className="board">
-            {!hasStarted &&
-              board?.map((row: number[], rowIndex) => {
-                return (
-                  <div key={rowIndex} className={styles.row}>
-                    {row.map((cell: number, colIndex) => {
-                      return (
-                        <div key={`${rowIndex}-${colIndex}`}>
+            {board?.map((row: number[], rowIndex) => {
+              return (
+                <div key={rowIndex} className={styles.row}>
+                  {row.map((cell: number, colIndex) => {
+                    return (
+                      <div key={`${rowIndex}-${colIndex}`}>
+                        {hasStarted && <Cell isActive={cell ? true : false} />}
+                        {!hasStarted && (
                           <Cell
                             isActive={false}
                             setCell={setCell}
                             row={rowIndex}
                             col={colIndex}
                           />
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            {hasStarted &&
-              board?.map((row: number[], rowIndex) => {
-                return (
-                  <div key={rowIndex} className={styles.row}>
-                    {row.map((cell: number, colIndex) => {
-                      return (
-                        <div key={`${rowIndex}-${colIndex}`}>
-                          <Cell isActive={cell ? true : false} />
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
           <button onClick={startGame} className={styles.button}>
             start
