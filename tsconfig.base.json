@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@gameoflife-nrwl/game-of-life-algr": [
+        "packages/game-of-life-algr/src/index.ts"
+      ]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

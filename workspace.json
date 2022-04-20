@@ -1,4 +1,6 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "game-of-life-algr": "packages/game-of-life-algr"
+  }
 }
