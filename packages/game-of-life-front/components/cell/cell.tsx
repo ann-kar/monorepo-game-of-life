@@ -12,8 +12,10 @@ export function Cell(props: CellProps) {
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
-    props.setCell(props.row, props.col);
-    setIsClicked(!isClicked);
+    if (props.setCell) {
+      props.setCell(props.row, props.col);
+      setIsClicked(!isClicked);
+    }
   };
   return (
     <div
