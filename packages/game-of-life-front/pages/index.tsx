@@ -1,24 +1,68 @@
 import styles from './index.module.css';
 
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
+import { useEffect, useState } from 'react';
+
 export function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.css file.
-   */
+  const [game, setGame] = useState<any>();
+  const [board, setBoard] = useState<number[][]>();
+
+  useEffect(() => {
+    const g = new GameOfLife(10, 10);
+    setGame(g);
+  }, []);
+
+  useEffect(() => {
+    if (game) {
+      game.setCell(3, 1);
+      game.setCell(4, 1);
+      game.setCell(2, 1);
+      game.setCell(2, 2);
+      game.setCell(4, 2);
+      game.setCell(1, 2);
+      const currentBoard = game.getBoard();
+      setBoard(currentBoard);
+      console.log(currentBoard);
+    }
+  }, [game]);
+
+
+  const tick = () => {
+    game.tick();
+    let currentBoard = game.getBoard();
+    setBoard(currentBoard);
+  };
+
   return (
     <div className={styles.page}>
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
-            <h1>
-              <span> Hello there, </span>
-              Welcome game-of-life-front 👋
-            </h1>
+            <h1>Game of life</h1>
+          </div>
+          <div className="board">
+
+            {board?.map((row: number[], rowIndex) => {
+                return (
+                  <div key={rowIndex} className={styles.row}>
+                    {row.map((cell: number, colIndex) => {
+                      return (
+                        <div key={`${rowIndex}-${colIndex}`}>
+                          {cell === 0 && <div className={styles.cell} />}
+                          {cell === 1 && <div className={styles.activeCell} />}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
           </div>
 
-
-                
+          <button onClick={tick} className={styles.button}>
+            tick
+          </button>
         </div>
       </div>
     </div>
