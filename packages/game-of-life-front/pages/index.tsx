@@ -3,7 +3,6 @@ import styles from './index.module.css';
 import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 import { useEffect, useState } from 'react';
 import Cell from '../components/cell/cell';
-import Link from 'next/link';
 
 const isBoardEmpty = (board: number[][]): boolean => {
   return board
@@ -70,13 +69,13 @@ export function Index() {
     game.setCell(4, 2);
     game.setCell(4, 3);
     setHasStarted(true);
-  }
+  };
 
   const restart = () => {
     setHasStarted(false);
     const g = new GameOfLife(10, 10);
     setGame(g);
-  }
+  };
 
   const autotick = () => {
     setIsAutoplayOn(!isAutoplayOn);
@@ -84,34 +83,32 @@ export function Index() {
 
   return (
     <div className={styles.page}>
-      <div className="wrapper">
-        <div className="container">
-          <div id="welcome">
-            <h1>Game of life</h1>
-          </div>
-          <div className="board">
-            {board?.map((row: number[], rowIndex) => {
-              return (
-                <div key={rowIndex} className={styles.row}>
-                  {row.map((cell: number, colIndex) => {
-                    return (
-                      <div key={`${rowIndex}-${colIndex}`}>
-                        {hasStarted && <Cell isActive={cell ? true : false} />}
-                        {!hasStarted && (
-                          <Cell
-                            isActive={false}
-                            setCell={setCell}
-                            row={rowIndex}
-                            col={colIndex}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+      <div className={styles.wrapper}>
+        <h1 className={styles.header}>Game of life</h1>
+        <div className="board">
+          {board?.map((row: number[], rowIndex) => {
+            return (
+              <div key={rowIndex} className={styles.row}>
+                {row.map((cell: number, colIndex) => {
+                  return (
+                    <div key={`${rowIndex}-${colIndex}`}>
+                      {hasStarted && <Cell isActive={cell ? true : false} />}
+                      {!hasStarted && (
+                        <Cell
+                          isActive={false}
+                          setCell={setCell}
+                          row={rowIndex}
+                          col={colIndex}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+        <nav>
           <button
             onClick={startGame}
             className={`${styles.button} ${hasStarted && styles.activeButton}`}
@@ -122,7 +119,7 @@ export function Index() {
             onClick={startWithDefault}
             className={`${styles.button} ${hasStarted && styles.activeButton}`}
           >
-            start with default pattern
+            start with default
           </button>
           <button onClick={tick} className={styles.button}>
             tick
@@ -133,7 +130,7 @@ export function Index() {
           <button onClick={restart} className={styles.button}>
             restart
           </button>
-        </div>
+        </nav>
       </div>
     </div>
   );
