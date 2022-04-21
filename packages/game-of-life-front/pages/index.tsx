@@ -91,13 +91,6 @@ export function Index() {
     setHasStarted(true);
   };
 
-  const restart = () => {
-    setHasStarted(false);
-
-    const g = new GameOfLife(10, 10);
-    setGame(g);
-  };
-
   const autotick = () => {
     setIsAutoplayOn(!isAutoplayOn);
   };
@@ -132,10 +125,10 @@ export function Index() {
         <input onChange={(e) => setBoardSize(Number(e.target.value))} />
         <nav>
           <Button onClick={startGame} label={'start'} />
-          <Button onClick={startWithDefault} label={'start (default)'} />
+          <Button onClick={startWithDefault} label={'default'} />
           <Button onClick={tick} label={'tick'} />
           <Button onClick={autotick} label={'autoplay'} />
-          {/* <Button onClick={restart} label={'restart'} /> */}
+          <a className={styles.link} href="./"><Button onClick={() => {}} label={'restart'} /></a>
         </nav>
       </div>
     </div>
