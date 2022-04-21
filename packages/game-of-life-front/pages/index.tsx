@@ -1,17 +1,11 @@
 import { useEffect, useState } from 'react';
-import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
-
-// yet another random change
-// one more because caching works weird
-// and another
-// one final test - with real cache now! 2
 
 import styles from './index.module.css';
 import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
 import { Board } from '../interfaces/interfaces';
 import Button from '../components/button/button';
-import { max } from 'lodash';
+import produce from 'immer';
 
 const isBoardEmpty = (board: Board): boolean => {
   return board
@@ -22,23 +16,21 @@ const isBoardEmpty = (board: Board): boolean => {
 };
 
 export function Index() {
-  const [game, setGame] = useState<any>();
   const [board, setBoard] = useState<number[][]>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [boardId, setBoardId] = useState<string>();
   const [wrongBoardSize, setWrongBoardSize] = useState<boolean>(false);
+  const [boardSize, setBoardSize] = useState<number>(10);
 
   useEffect(() => {
-    const g = new GameOfLife(10, 10);
-    setGame(g);
-  }, []);
+    createBoard(boardSize);
+  }, [boardSize]);
 
   const updateBoardSize = (size: number) => {
     if (size < 16 && size > 2) {
-      const g = new GameOfLife(size, size);
-      setGame(g);
+      setBoardSize(size);
       setWrongBoardSize(false);
     } else {
       setWrongBoardSize(true);
@@ -50,12 +42,10 @@ export function Index() {
     res.then((res) => setBoard(res.board));
   };
 
-  useEffect(() => {
-    if (game) {
-      const currentBoard = game.getBoard();
-      setBoard(currentBoard);
-    }
-  }, [game]);
+  const createBoard = (size) => {
+    const newBoard = new Array(10).fill(0).map((_) => Array(10).fill(0));
+    setBoard(newBoard);
+  };
 
   useEffect(() => {
     if (board && isBoardEmpty(board)) {
@@ -73,11 +63,15 @@ export function Index() {
   }, [isAutoplayOn, isEmpty]);
 
   const setCell = (row: number, col: number) => {
-    if (board[row][col] == 1) {
-      board[row][col] = 0;
-    } else {
-      board[row][col] = 1;
-    }
+    setBoard(
+      produce((draft) => {
+        if (draft[row][col] === 1) {
+          draft[row][col] = 0;
+        } else {
+          draft[row][col] = 1;
+        }
+      })
+    );
   };
 
   const startGame = () => {
@@ -88,21 +82,17 @@ export function Index() {
     setHasStarted(true);
   };
 
-  const startWithDefault = () => {
-    game.setCell(1, 1);
-    game.setCell(1, 2);
-    game.setCell(2, 2);
-    game.setCell(3, 2);
-    game.setCell(4, 2);
-    game.setCell(4, 3);
-    const res = Api.sendBoard(board);
-    res.then((res) => {
-      setBoardId(res.id);
-    });
-    setHasStarted(true);
+  const addDefaultPattern = () => {
+    setCell(2, 1);
+    setCell(2, 2);
+    setCell(2, 3);
+    setCell(2, 4);
+    setCell(3, 3);
+    setCell(4, 1);
+    setCell(4, 2);
   };
 
-  const autotick = () => {
+  const autoplay = () => {
     setIsAutoplayOn(!isAutoplayOn);
   };
 
@@ -110,6 +100,26 @@ export function Index() {
     <div className={styles.page}>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>Game of life</h1>
+        <div className={styles.inputCnt}>
+          <label className={styles.label} htmlFor="sizeInput">
+            set board size:
+          </label>
+          <input
+            id="sizeInput"
+            type="number"
+            placeholder="10"
+            min="3"
+            max="15"
+            className={styles.input}
+            onChange={(e) => updateBoardSize(Number(e.target.value))}
+            disabled={hasStarted}
+          />
+        </div>
+        <small className={styles.message}>
+          {wrongBoardSize
+            ? 'please provide a number in the range from 3 to 15'
+            : ''}
+        </small>
         <div className="board" data-testid="board">
           {board?.map((row: number[], rowIndex) => {
             return (
@@ -135,29 +145,13 @@ export function Index() {
         </div>
         <nav className={styles.nav}>
           <Button onClick={startGame} label={'start'} />
-          <Button onClick={startWithDefault} label={'default'} />
+          <Button onClick={addDefaultPattern} label={'default'} />
           <Button onClick={tick} label={'tick'} />
-          <Button onClick={autotick} label={'autoplay'} />
+          <Button onClick={autoplay} label={'autoplay'} />
           <a className={styles.link} href="./">
             <Button onClick={() => {}} label={'restart'} />
           </a>
         </nav>
-        <div className={styles.inputCnt}>
-          <label className={styles.label} htmlFor="sizeInput">
-            set board size:
-          </label>
-          <input
-            id="sizeInput"
-            type="number"
-            placeholder="10"
-            min="3"
-            max="15"
-            className={styles.input}
-            onChange={(e) => updateBoardSize(Number(e.target.value))}
-            disabled={hasStarted}
-          />
-        </div>
-        <small>{wrongBoardSize ? "please provide a number in the range from 3 to 15" : ""}</small>
       </div>
     </div>
   );
