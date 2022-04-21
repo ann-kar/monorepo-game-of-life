@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx build game-of-life-front --prod",
-    "start": "nx serve game-of-life-front --prod"
+    "start": "cd dist/packages/game-of-life-front && npx next start"
   },
   "private": true,
   "dependencies": {
@@ -38,7 +38,6 @@
     "@nrwl/js": "13.10.3",
     "@nrwl/linter": "13.10.3",
     "@nrwl/nest": "^13.10.3",
-    "@nrwl/next": "^13.10.3",
     "@nrwl/react": "13.10.3",
     "@nrwl/web": "13.10.3",
     "@testing-library/react": "13.0.0",
