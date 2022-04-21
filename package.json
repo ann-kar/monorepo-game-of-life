@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx build game-of-life-front --prod",
-    "start": "cd dist/packages/game-of-life-front && npx next start"
+    "build:frontend": "nx build game-of-life-front --prod",
+    "start:frontend": "cd dist/packages/game-of-life-front && npx next start"
   },
   "private": true,
   "dependencies": {
