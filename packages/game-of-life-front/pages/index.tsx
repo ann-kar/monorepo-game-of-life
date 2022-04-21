@@ -159,14 +159,14 @@ export function Index() {
             )}
             {hasStarted && (
               <>
-                <Button onClick={handleTick} label={'tick'} />
-                <Button onClick={autoplay} label={'autoplay'} />
+                <Button onClick={handleTick} label={'tick'} testId={'tick'} />
+                <Button onClick={autoplay} label={'autoplay'} testId={'autoplay'} />
               </>
             )}
             {!hasStarted && (
               <>
-                <Button onClick={startGame} label={'start'} />
-                <Button onClick={addDefaultPattern} label={'default'} />
+                <Button onClick={startGame} label={'start'} testId={'start'}  />
+                <Button onClick={addDefaultPattern} label={'default'} testId={'default'} />
               </>
             )}
             <a className={styles.link} href="./">

@@ -3,6 +3,7 @@ import styles from './button.module.css';
 
 /* eslint-disable-next-line */
 export interface ButtonProps {
+  testId?: string;
   label: string;
   onClick: () => void;
 }
@@ -20,6 +21,7 @@ export function Button(props: ButtonProps) {
     <button
       className={`${styles.button} ${isClicked && styles.activeButton}`}
       onClick={handleClick}
+      data-testid={props.testId || ""}
     >
       {props.label}
     </button>
