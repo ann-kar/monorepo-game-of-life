@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run-many --target=build --all --prod",
-
-    "start": "node dist/packages/backend/main.js && cd dist/packages/game-of-life-front && npx next start"
+    "start:frontend": "cd dist/packages/game-of-life-front && npx next start",
+    "start:backend": "node dist/packages/backend/main.js"
   },
   "private": true,
   "dependencies": {
