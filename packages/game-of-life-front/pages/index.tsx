@@ -6,6 +6,7 @@ import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
 import { Board } from '../interfaces/interfaces';
 import Button from '../components/button/button';
+import { max } from 'lodash';
 
 const isBoardEmpty = (board: Board): boolean => {
   return board
@@ -22,15 +23,21 @@ export function Index() {
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [boardId, setBoardId] = useState<string>();
+  const [wrongBoardSize, setWrongBoardSize] = useState<boolean>(false);
 
   useEffect(() => {
     const g = new GameOfLife(10, 10);
     setGame(g);
   }, []);
 
-  const setBoardSize = (size: number) => {
-    const g = new GameOfLife(size, size);
-    setGame(g);
+  const updateBoardSize = (size: number) => {
+    if (size <= 15) {
+      const g = new GameOfLife(size, size);
+      setGame(g);
+      setWrongBoardSize(false);
+    } else {
+      setWrongBoardSize(true);
+    }
   };
 
   const tick = () => {
@@ -121,14 +128,31 @@ export function Index() {
             );
           })}
         </div>
-        <input onChange={(e) => setBoardSize(Number(e.target.value))} />
-        <nav>
+        <nav className={styles.nav}>
           <Button onClick={startGame} label={'start'} />
           <Button onClick={startWithDefault} label={'default'} />
           <Button onClick={tick} label={'tick'} />
           <Button onClick={autotick} label={'autoplay'} />
-          <a className={styles.link} href="./"><Button onClick={() => {}} label={'restart'} /></a>
+          <a className={styles.link} href="./">
+            <Button onClick={() => {}} label={'restart'} />
+          </a>
         </nav>
+        <div className={styles.inputCnt}>
+          <label className={styles.label} htmlFor="sizeInput">
+            set board size:
+          </label>
+          <input
+            id="sizeInput"
+            type="number"
+            placeholder="10"
+            min="3"
+            max="15"
+            className={styles.input}
+            onChange={(e) => updateBoardSize(Number(e.target.value))}
+            disabled={hasStarted}
+          />
+        </div>
+        <small>{wrongBoardSize ? "please provide a number in the range from 3 to 15" : ""}</small>
       </div>
     </div>
   );
