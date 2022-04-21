@@ -25,7 +25,7 @@
 .inputCnt {
   border: 1px solid #bababa;
   border-radius: 0.5rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,4 +43,8 @@
   font-size: 1.2rem;
   margin-right: 1rem;
   margin-left: 1rem;
+}
+
+.message {
+  margin: 2rem;
 }
