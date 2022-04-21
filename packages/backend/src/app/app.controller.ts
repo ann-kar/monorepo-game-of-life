@@ -31,7 +31,7 @@ export class AppController {
   getTick(@Body() getTickDto: GetTickDto) {
     const res = this.appService.getTick(getTickDto);
     if (!res) {
-      throw new HttpException('Board not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Board not found', HttpStatus.NOT_FOUND);
     } else {
       return res;
     }

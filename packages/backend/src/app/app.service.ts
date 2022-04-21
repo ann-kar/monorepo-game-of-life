@@ -9,12 +9,12 @@ interface IBoard {
   id: string | number;
   board: number[][];
   updatedAt?: number;
+  generation: number;
 }
 class LocalDB {
   constructor(public db: IBoard[] = []) {}
   addToDB(board) {
-    this.db.push(board);
-    return this;
+    return new LocalDB(this.db.concat(board));
   }
   findBoard(id: string) {
     const find = this.db.find((el) => el.id == id);
@@ -23,18 +23,19 @@ class LocalDB {
   updateBoard(id: string, newBoard: number[][]) {
     const nextState = produce(this.db, (draft) => {
       const index = this.db.findIndex((el) => el.id == id);
+      const find = this.db.find((el) => el.id == id);
       draft[index].board = newBoard;
       draft[index].updatedAt = Date.now();
+      draft[index].generation = find.generation + 1;
     });
-    this.db = nextState;
-    return nextState;
+    return new LocalDB(nextState);
   }
 }
 
+let db = new LocalDB();
+
 @Injectable()
 export class AppService {
-  db = new LocalDB();
-
   generateBoard(param: { size: string }) {
     const game = new Board().createBoard(Number(param.size)).getBoard();
     return {
@@ -49,22 +50,23 @@ export class AppService {
       board: game,
       id: uuidv4(),
       updatedAt: Date.now(),
+      generation: 0,
     };
-    this.db.addToDB(boardObj);
+    db = db.addToDB(boardObj);
     return boardObj;
   }
   getTick(getTickDto: GetTickDto) {
-    const board = this.db.findBoard(getTickDto.id);
+    const board = db.findBoard(getTickDto.id);
     // console.dir(this.db.db);
     if (board) {
       const game = new Board().tick(board.board);
-      this.db.updateBoard(String(board.id), game);
-      const newBoard = this.db.findBoard(String(board.id));
+      db = db.updateBoard(String(board.id), game);
+      const newBoard = db.findBoard(String(board.id));
       if (newBoard) {
         return {
           id: board.id,
           board: newBoard.board,
-          generation: 0,
+          generation: newBoard.generation,
         };
       } else {
         return false;
