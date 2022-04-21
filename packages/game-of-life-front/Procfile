@@ -1,0 +1,1 @@
+web: sh -c 'npm build && cd dist/packages/game-of-life-front && npx next start'
