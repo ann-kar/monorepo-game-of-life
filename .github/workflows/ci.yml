@@ -18,4 +18,4 @@ jobs:
           cache: 'npm'
       - uses: nrwl/nx-set-shas@v2
       - run: npm ci
-      - run: npx nx affected --target=test --all --ci --code-coverage
+      - run: npx nx affected --target=test --ci --code-coverage
