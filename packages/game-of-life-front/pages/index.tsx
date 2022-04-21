@@ -6,6 +6,7 @@ import { Api } from '../services/services';
 import { Board } from '../interfaces/interfaces';
 import Button from '../components/button/button';
 import produce from 'immer';
+import Menu from '../components/menu/menu';
 
 const isBoardEmpty = (board: Board): boolean => {
   return board
@@ -141,13 +142,24 @@ export function Index() {
           })}
         </div>
         <nav className={styles.nav}>
-          <Button onClick={startGame} label={'start'} />
-          <Button onClick={addDefaultPattern} label={'default'} />
-          <Button onClick={tick} label={'tick'} />
-          <Button onClick={autoplay} label={'autoplay'} />
-          <a className={styles.link} href="./">
-            <Button onClick={() => {}} label={'restart'} />
-          </a>
+          <Menu>
+            {!hasStarted && <h3 className={styles.info}>create your starting pattern or use default</h3>}
+            {hasStarted && (
+              <>
+                <Button onClick={tick} label={'tick'} />
+                <Button onClick={autoplay} label={'autoplay'} />
+              </>
+            )}
+            {!hasStarted && (
+              <>
+                <Button onClick={startGame} label={'start'} />
+                <Button onClick={addDefaultPattern} label={'default'} />
+              </>
+            )}
+            <a className={styles.link} href="./">
+              <Button onClick={() => {}} label={'restart'} />
+            </a>
+          </Menu>
         </nav>
       </div>
     </div>

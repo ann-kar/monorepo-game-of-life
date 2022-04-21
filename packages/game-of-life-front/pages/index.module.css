@@ -48,3 +48,9 @@
 .message {
   margin: 2rem;
 }
+
+.info {
+  color: green;
+  margin: 0;
+  text-align:center;
+}
