@@ -27,11 +27,11 @@
     "regenerator-runtime": "0.13.7",
     "supertest": "^6.2.2",
     "tslib": "^2.0.0",
-    "nx": "13.10.3"
-
+    "nx": "13.10.3",
+    "@nrwl/workspace": "13.10.3",
+    "@nrwl/cli": "13.10.3"
   },
   "devDependencies": {
-    "@nrwl/cli": "13.10.3",
     "@nrwl/cypress": "13.10.3",
     "@nrwl/eslint-plugin-nx": "13.10.3",
     "@nrwl/jest": "13.10.3",
@@ -41,7 +41,6 @@
     "@nrwl/next": "^13.10.3",
     "@nrwl/react": "13.10.3",
     "@nrwl/web": "13.10.3",
-    "@nrwl/workspace": "13.10.3",
     "@testing-library/react": "13.0.0",
     "@testing-library/react-hooks": "7.0.2",
     "@types/jest": "27.0.2",
