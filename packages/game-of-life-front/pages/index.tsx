@@ -28,15 +28,14 @@ export function Index() {
     setGame(g);
   }, []);
 
-  const tick = () => {
-    console.log(boardId);
-   const res = Api.sendTick(boardId);
+  const setBoardSize = (size: number) => {
+    const g = new GameOfLife(size, size);
+    setGame(g);
+  };
 
-    res.then((res) => console.log(res));
-    // res.then((res) => setBoard(res.board));
-    // game.tick();
-    // let currentBoard = game.getBoard();
-    // setBoard(currentBoard);
+  const tick = () => {
+    const res = Api.sendTick(boardId);
+    res.then((res) => setBoard(res.board));
   };
 
   useEffect(() => {
@@ -45,16 +44,6 @@ export function Index() {
       setBoard(currentBoard);
     }
   }, [game]);
-
-  useEffect(() => {
-    if (board && !boardId) {
-      const res = Api.sendBoard(board);
-      res.then((res) => {
-        console.log(res.id);
-        setBoardId(res.id);
-      });
-    }
-  }, [board]);
 
   useEffect(() => {
     if (board && isBoardEmpty(board)) {
@@ -73,8 +62,7 @@ export function Index() {
   }, [isAutoplayOn, isEmpty]);
 
   const setCell = (row: number, col: number) => {
-
-  if (board[row][col] == 1) {
+    if (board[row][col] == 1) {
       board[row][col] = 0;
     } else {
       board[row][col] = 1;
@@ -82,7 +70,11 @@ export function Index() {
   };
 
   const startGame = () => {
-
+      const res = Api.sendBoard(board);
+      res.then((res) => {
+        console.log(res.id);
+        setBoardId(res.id);
+      });
     setHasStarted(true);
   };
 
@@ -133,6 +125,7 @@ export function Index() {
             );
           })}
         </div>
+        <input onChange={(e) => setBoardSize(Number(e.target.value))} />
         <nav>
           <Button onClick={startGame} label={'choose pattern & start'} />
           <Button onClick={startWithDefault} label={'start with default'} />
