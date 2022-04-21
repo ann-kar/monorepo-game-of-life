@@ -43,7 +43,7 @@ export function Index() {
   };
 
   const createBoard = (size) => {
-    const newBoard = new Array(10).fill(0).map((_) => Array(10).fill(0));
+    const newBoard = new Array(size).fill(0).map((_) => Array(size).fill(0));
     setBoard(newBoard);
   };
 
@@ -127,15 +127,12 @@ export function Index() {
                 {row.map((cell: number, colIndex) => {
                   return (
                     <div key={`${rowIndex}-${colIndex}`}>
-                      {hasStarted && <Cell isActive={cell ? true : false} />}
-                      {!hasStarted && (
-                        <Cell
-                          isActive={false}
-                          setCell={setCell}
-                          row={rowIndex}
-                          col={colIndex}
-                        />
-                      )}
+                      <Cell
+                        isActive={cell ? true : false}
+                        setCell={hasStarted ? () => {} : setCell}
+                        row={rowIndex}
+                        col={colIndex}
+                      />
                     </div>
                   );
                 })}
