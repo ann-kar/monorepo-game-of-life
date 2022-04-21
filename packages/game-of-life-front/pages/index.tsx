@@ -48,13 +48,13 @@ export function Index() {
   };
 
   useEffect(() => {
-    if (board && isBoardEmpty(board)) {
-      setIsEmpty(true);
+    if (board) {
+      isBoardEmpty(board) ? setIsEmpty(true) : setIsEmpty(false);
     }
   }, [board]);
 
   useEffect(() => {
-    if (isAutoplayOn) {
+    if (isAutoplayOn && !isEmpty) {
       const interval = setInterval(() => {
         tick();
       }, 100);
