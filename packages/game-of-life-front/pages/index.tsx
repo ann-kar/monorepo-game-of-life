@@ -70,11 +70,10 @@ export function Index() {
   };
 
   const startGame = () => {
-      const res = Api.sendBoard(board);
-      res.then((res) => {
-        console.log(res.id);
-        setBoardId(res.id);
-      });
+    const res = Api.sendBoard(board);
+    res.then((res) => {
+      setBoardId(res.id);
+    });
     setHasStarted(true);
   };
 
@@ -85,11 +84,16 @@ export function Index() {
     game.setCell(3, 2);
     game.setCell(4, 2);
     game.setCell(4, 3);
+    const res = Api.sendBoard(board);
+    res.then((res) => {
+      setBoardId(res.id);
+    });
     setHasStarted(true);
   };
 
   const restart = () => {
     setHasStarted(false);
+
     const g = new GameOfLife(10, 10);
     setGame(g);
   };
@@ -102,7 +106,7 @@ export function Index() {
     <div className={styles.page}>
       <div className={styles.wrapper}>
         <h1 className={styles.header}>Game of life</h1>
-        <div className="board">
+        <div className="board" data-testid="board">
           {board?.map((row: number[], rowIndex) => {
             return (
               <div key={rowIndex} className={styles.row}>
@@ -127,11 +131,11 @@ export function Index() {
         </div>
         <input onChange={(e) => setBoardSize(Number(e.target.value))} />
         <nav>
-          <Button onClick={startGame} label={'choose pattern & start'} />
-          <Button onClick={startWithDefault} label={'start with default'} />
+          <Button onClick={startGame} label={'start'} />
+          <Button onClick={startWithDefault} label={'start (default)'} />
           <Button onClick={tick} label={'tick'} />
           <Button onClick={autotick} label={'autoplay'} />
-          <Button onClick={restart} label={'restart'} />
+          {/* <Button onClick={restart} label={'restart'} /> */}
         </nav>
       </div>
     </div>

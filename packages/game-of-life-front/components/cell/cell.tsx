@@ -19,6 +19,7 @@ export function Cell(props: CellProps) {
   };
   return (
     <div
+      data-testid="cell"
       onClick={handleClick}
       className={`${styles.cell} ${
         (props.isActive || isClicked) && styles.activeCell
