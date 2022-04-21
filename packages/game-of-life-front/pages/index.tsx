@@ -31,7 +31,7 @@ export function Index() {
   }, []);
 
   const updateBoardSize = (size: number) => {
-    if (size <= 15) {
+    if (size < 16 && size > 2) {
       const g = new GameOfLife(size, size);
       setGame(g);
       setWrongBoardSize(false);
