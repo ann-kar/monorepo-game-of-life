@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { GameOfLife } from '@gameoflife-nrwl/game-of-life-algr';
 
+// random change
+
 import styles from './index.module.css';
 import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
