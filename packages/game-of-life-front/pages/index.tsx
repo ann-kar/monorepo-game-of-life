@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import styles from './index.module.css';
 import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
-import { Board } from '../interfaces/interfaces';
+import { Board, IResponse } from '../interfaces/interfaces';
 import Button from '../components/button/button';
 import produce from 'immer';
 import Menu from '../components/menu/menu';
@@ -16,6 +16,14 @@ const isBoardEmpty = (board: Board): boolean => {
     .every((result) => result === true);
 };
 
+export const IndexContext = createContext<{
+  sendTick: (boardId: string) => Promise<IResponse>;
+}>({
+  sendTick: async (boardId) => {
+    return await Api.sendTick(boardId);
+  },
+});
+
 export function Index() {
   const [board, setBoard] = useState<number[][]>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
@@ -25,9 +33,12 @@ export function Index() {
   const [wrongBoardSize, setWrongBoardSize] = useState<boolean>(false);
   const [boardSize, setBoardSize] = useState<number>(10);
 
-  useEffect(() => {
-    createBoard(boardSize);
-  }, [boardSize]);
+  const { sendTick } = useContext(IndexContext);
+
+  const createBoard = (size) => {
+    const newBoard = new Array(size).fill(0).map((_) => Array(size).fill(0));
+    setBoard(newBoard);
+  };
 
   const updateBoardSize = (size: number) => {
     if (size < 16 && size > 2) {
@@ -38,30 +49,16 @@ export function Index() {
     }
   };
 
-  const tick = () => {
-    const res = Api.sendTick(boardId);
-    res.then((res) => setBoard(res.board));
+  const startGame = async () => {
+    const res = await Api.sendBoard(board);
+    setBoardId(res.id);
+    setHasStarted(true);
   };
 
-  const createBoard = (size) => {
-    const newBoard = new Array(size).fill(0).map((_) => Array(size).fill(0));
-    setBoard(newBoard);
+  const handleTick = async () => {
+    const res = await sendTick(boardId);
+    setBoard(res?.board);
   };
-
-  useEffect(() => {
-    if (board) {
-      isBoardEmpty(board) ? setIsEmpty(true) : setIsEmpty(false);
-    }
-  }, [board]);
-
-  useEffect(() => {
-    if (isAutoplayOn && !isEmpty) {
-      const interval = setInterval(() => {
-        tick();
-      }, 100);
-      return () => clearInterval(interval);
-    }
-  }, [isAutoplayOn, isEmpty]);
 
   const setCell = (row: number, col: number) => {
     setBoard(
@@ -73,14 +70,6 @@ export function Index() {
         }
       })
     );
-  };
-
-  const startGame = () => {
-    const res = Api.sendBoard(board);
-    res.then((res) => {
-      setBoardId(res.id);
-    });
-    setHasStarted(true);
   };
 
   const addDefaultPattern = () => {
@@ -96,6 +85,26 @@ export function Index() {
   const autoplay = () => {
     setIsAutoplayOn(!isAutoplayOn);
   };
+
+  useEffect(() => {
+    createBoard(boardSize);
+  }, [boardSize]);
+
+  useEffect(() => {
+    if (board) {
+      isBoardEmpty(board) ? setIsEmpty(true) : setIsEmpty(false);
+    }
+  }, [board]);
+
+  useEffect(() => {
+    if (isAutoplayOn && !isEmpty) {
+      const interval = setInterval(async () => {
+        const res = await sendTick(boardId);
+        setBoard(res?.board);
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [isAutoplayOn, isEmpty]);
 
   return (
     <div className={styles.page}>
@@ -143,10 +152,14 @@ export function Index() {
         </div>
         <nav className={styles.nav}>
           <Menu>
-            {!hasStarted && <h3 className={styles.info}>create your starting pattern or use default</h3>}
+            {!hasStarted && (
+              <h3 className={styles.info}>
+                create your starting pattern or use default
+              </h3>
+            )}
             {hasStarted && (
               <>
-                <Button onClick={tick} label={'tick'} />
+                <Button onClick={handleTick} label={'tick'} />
                 <Button onClick={autoplay} label={'autoplay'} />
               </>
             )}
