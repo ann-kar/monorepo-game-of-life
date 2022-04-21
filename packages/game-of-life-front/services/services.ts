@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { Board, IResponse, IResponseDefault } from '../interfaces/interfaces';
+import { Board, IResponse } from '../interfaces/interfaces';
 
 export class Api {
   static async sendBoard(data: Board): Promise<IResponse> {
-    const url = 'http://localhost:3333/api/board';
+    const url = `https://game-of-life-backend-app.herokuapp.com/api/board`;
     try {
       const response = await axios.post(url, { board: data });
       return response.data;
@@ -14,7 +14,7 @@ export class Api {
   }
 
   static async sendTick(boardId: string): Promise<any> {
-    const url = 'http://localhost:3333/api/tick';
+    const url = 'https://game-of-life-backend-app.herokuapp.com/api/tick';
     try {
       const response = await axios.post(url, { id: boardId });
       return response.data;
