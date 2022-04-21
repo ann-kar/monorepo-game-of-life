@@ -47,7 +47,6 @@ export function Index() {
 
   useEffect(() => {
     if (board && isBoardEmpty(board)) {
-      console.log('board empty');
       setIsEmpty(true);
     }
   }, [board]);
