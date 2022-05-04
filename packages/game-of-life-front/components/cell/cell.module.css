@@ -1,10 +1,10 @@
 .cell {
-    width: 40px;
-    height: 40px;
+    width: 1.7rem;
+    height: 1.7rem;
     border: 1px solid #dadada;
 }
 
 .activeCell {
-    background: green;
-    border: 5px solid darkgreen;
+    background-color: var(--cell-bg);
+    border: 5px solid var(--cell-border);;
 }

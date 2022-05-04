@@ -6,6 +6,9 @@ html {
   line-height: 1.5;
   tab-size: 4;
   scroll-behavior: smooth;
+  --cell-bg: #fb938f;
+  --cell-border: #c26b85;
+  --font: #fafafa;
 }
 body {
   font-family: inherit;

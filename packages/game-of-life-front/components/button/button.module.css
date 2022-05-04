@@ -1,14 +1,21 @@
 .button {
-  padding: 10px 30px;
-  margin: 30px 10px;
-  font-size: 18px;
-  border: 1px solid #bababa;
-  background: #fff;
-  width: 8rem;
-  height: 5rem;
-  border-radius: 0.5rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #fb938f;
+  color: #fef5fa;
+  text-transform: uppercase;
+  background: transparent;
+  border-radius: 0.25rem;
+  margin: 0 0.5rem;
 }
 
-.activeButton {
-  color: lightgray;
+.button:hover {
+  color: #c26b85;
+  background: #fef5fa;
 }
+
+.activeButton, .activeButton:hover {
+  color: var(--font);
+  background: #d1d1d1;
+}
+

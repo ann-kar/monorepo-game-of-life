@@ -99,13 +99,12 @@ export function Index() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.wrapper}>
-        <h1 className={styles.header}>Game of life</h1>
-        <div className={styles.inputCnt}>
+      <h1 className={styles.header}><span>game of life</span>
+      <div className={styles.inputCnt}>
           <label className={styles.label} htmlFor="sizeInput">
-            set board size:
+            BOARD SIZE:
           </label>
-          <input
+        <input
             id="sizeInput"
             type="number"
             placeholder="10"
@@ -115,13 +114,15 @@ export function Index() {
             onChange={(e) => updateBoardSize(Number(e.target.value))}
             disabled={hasStarted}
           />
-        </div>
-        <small className={styles.message}>
+            <small className={styles.message}>
           {wrongBoardSize
             ? 'please provide a number in the range from 3 to 15'
             : ''}
         </small>
-        <div className="board" data-testid="board">
+          </div>
+        </h1>
+      <div className={styles.wrapper}>
+        <div data-testid="board">
           {board?.map((row: number[], rowIndex) => {
             return (
               <div key={rowIndex} className={styles.row}>
@@ -130,6 +131,7 @@ export function Index() {
                     <div key={`${rowIndex}-${colIndex}`}>
                       <Cell
                         isActive={cell ? true : false}
+                        // eslint-disable-next-line @typescript-eslint/no-empty-function
                         setCell={hasStarted ? () => {} : setCell}
                         row={rowIndex}
                         col={colIndex}
@@ -141,27 +143,34 @@ export function Index() {
             );
           })}
         </div>
-        <nav className={styles.nav}>
-          <Menu>
-            {!hasStarted && <h3 className={styles.info}>create your starting pattern or use default</h3>}
-            {hasStarted && (
-              <>
-                <Button onClick={tick} label={'tick'} />
-                <Button onClick={autoplay} label={'autoplay'} />
-              </>
-            )}
-            {!hasStarted && (
-              <>
-                <Button onClick={startGame} label={'start'} />
-                <Button onClick={addDefaultPattern} label={'default'} />
-              </>
-            )}
-            <a className={styles.link} href="./">
-              <Button onClick={() => {}} label={'restart'} />
-            </a>
-          </Menu>
-        </nav>
       </div>
+      <nav className={styles.nav}>
+        <Menu>
+          {/* {!hasStarted && (
+            <h3 className={styles.info}>
+              create your starting pattern or use default
+            </h3>
+          )} */}
+          {hasStarted && (
+            <>
+              <Button onClick={tick} label={'tick'} />
+              <Button onClick={autoplay} label={'autoplay'} />
+            </>
+          )}
+          {!hasStarted && (
+            <>
+              <Button onClick={startGame} label={'start'} />
+              <Button onClick={addDefaultPattern} label={'default'} />
+            </>
+          )}
+          <a className={styles.link} href="./">
+            {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+            <Button onClick={() => {}} label={'restart'} />
+          </a>
+
+        </Menu>
+
+      </nav>
     </div>
   );
 }
