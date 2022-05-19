@@ -99,7 +99,7 @@ export function Index() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.header}><span>game of life</span>
+      <h1 className="text-amber-700 font-extrabold"><span>game of life</span>
       <div className={styles.inputCnt}>
           <label className={styles.label} htmlFor="sizeInput">
             BOARD SIZE:
