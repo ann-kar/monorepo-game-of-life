@@ -26,7 +26,7 @@ export function Index() {
   const [boardSize, setBoardSize] = useState<number>(10);
 
   useEffect(() => {
-    createBoard(boardSize);
+    displayBoard(boardSize);
   }, [boardSize]);
 
   const updateBoardSize = (size: number) => {
@@ -38,12 +38,18 @@ export function Index() {
     }
   };
 
-  const tick = () => {
-    const res = Api.sendTick(boardId);
-    res.then((res) => setBoard(res.board));
+  const startGame = async () => {
+    const res = await Api.sendBoard(board);
+    setBoardId(res.id);
+    setHasStarted(true);
   };
 
-  const createBoard = (size) => {
+  const tick = async () => {
+    const res = await Api.sendTick(boardId);
+    setBoard(res.board);
+  };
+
+  const displayBoard = (size) => {
     const newBoard = new Array(size).fill(0).map((_) => Array(size).fill(0));
     setBoard(newBoard);
   };
@@ -75,13 +81,7 @@ export function Index() {
     );
   };
 
-  const startGame = () => {
-    const res = Api.sendBoard(board);
-    res.then((res) => {
-      setBoardId(res.id);
-    });
-    setHasStarted(true);
-  };
+
 
   const addDefaultPattern = () => {
     setCell(2, 1);
