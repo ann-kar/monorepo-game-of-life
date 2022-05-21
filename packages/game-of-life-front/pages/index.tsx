@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
+import produce from 'immer';
 
-import styles from './index.module.css';
 import Cell from '../components/cell/cell';
 import { Api } from '../services/services';
-import { Board } from '../interfaces/interfaces';
+import { Board, Coordinates } from '../interfaces/interfaces';
 import Button from '../components/button/button';
-import produce from 'immer';
 import Menu from '../components/menu/menu';
 import { Header } from '../components/Header';
 
@@ -18,7 +17,7 @@ const isBoardEmpty = (board: Board): boolean => {
 };
 
 export function Index() {
-  const [board, setBoard] = useState<number[][]>();
+  const [board, setBoard] = useState<Board>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
@@ -50,7 +49,7 @@ export function Index() {
     setBoard(res.board);
   };
 
-  const displayBoard = (size) => {
+  const displayBoard = (size:number) => {
     const newBoard = new Array(size).fill(0).map((_) => Array(size).fill(0));
     setBoard(newBoard);
   };
@@ -61,6 +60,34 @@ export function Index() {
     }
   }, [board]);
 
+  const handleCellClick = (c: Coordinates) => {
+    if (!hasStarted) {
+      setBoard(
+        produce((draft) => {
+          draft[c.row][c.col] = draft[c.row][c.col] === 1 ? 0 : 1;
+        })
+      );
+    }
+  };
+
+  const addDefaultPattern = () => {
+    if (!hasStarted) {
+      setBoard(
+        produce((draft) => {
+          draft[2][1] = 1;
+          draft[2][1] = 1;
+          draft[2][2] = 1;
+          draft[0][2] = 1;
+          draft[1][2] = 1;
+        })
+      );
+    }
+  };
+
+  const autoplay = () => {
+    setIsAutoplayOn(!isAutoplayOn);
+  };
+
   useEffect(() => {
     if (isAutoplayOn && !isEmpty) {
       const interval = setInterval(() => {
@@ -69,32 +96,6 @@ export function Index() {
       return () => clearInterval(interval);
     }
   }, [isAutoplayOn, isEmpty]);
-
-  const setCell = (row: number, col: number) => {
-    setBoard(
-      produce((draft) => {
-        if (draft[row][col] === 1) {
-          draft[row][col] = 0;
-        } else {
-          draft[row][col] = 1;
-        }
-      })
-    );
-  };
-
-  const addDefaultPattern = () => {
-    setCell(2, 1);
-    setCell(2, 2);
-    setCell(2, 3);
-    setCell(2, 4);
-    setCell(3, 3);
-    setCell(4, 1);
-    setCell(4, 2);
-  };
-
-  const autoplay = () => {
-    setIsAutoplayOn(!isAutoplayOn);
-  };
 
   return (
     <div className="container mx-auto max-w-md flex flex-col items-center">
@@ -110,7 +111,7 @@ export function Index() {
           onChange={(e) => updateBoardSize(Number(e.target.value))}
           disabled={hasStarted}
         />
-        <small className={styles.message}>
+        <small>
           {wrongBoardSize
             ? 'please provide a number in the range from 3 to 15'
             : ''}
@@ -118,17 +119,24 @@ export function Index() {
       </div>
 
       <div className="board">
-        {board?.map((row: number[], rowIndex) => {
-          return (
-            <div className="row flex" key={rowIndex}>
-              {row.map((cell, colIndex) => {
-                return (
-                  <Cell isActive={!!cell} key={`${rowIndex}-${colIndex}`} />
-                );
-              })}
-            </div>
-          );
-        })}
+        {board &&
+          board.map((row: number[], rowIndex) => {
+            return (
+              <div className="row flex" key={rowIndex}>
+                {row.map((cell, colIndex) => {
+                  return (
+                    <Cell
+                      isActive={!!cell}
+                      row={rowIndex}
+                      col={colIndex}
+                      key={`${rowIndex}-${colIndex}`}
+                      handleCellClick={handleCellClick}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
       </div>
 
       <nav>
@@ -145,7 +153,7 @@ export function Index() {
               <Button onClick={addDefaultPattern} label={'default'} />
             </>
           )}
-          <a className={styles.link} href="./">
+          <a href="./">
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
             <Button onClick={() => {}} label={'restart'} />
           </a>
