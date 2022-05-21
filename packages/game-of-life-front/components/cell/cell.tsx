@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styles from './cell.module.css';
 
 export interface CellProps {
   isActive: boolean;
@@ -21,8 +20,8 @@ export function Cell(props: CellProps) {
     <div
       data-testid="cell"
       onClick={handleClick}
-      className={`${styles.cell} ${
-        (props.isActive || isClicked) && styles.activeCell
+      className={`w-10 h-10 border border-gray-300 ${
+        props.isActive && 'bg-emerald-500'
       }`}
     />
   );

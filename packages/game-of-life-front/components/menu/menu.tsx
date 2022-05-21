@@ -8,7 +8,7 @@ export interface MenuProps {
 
 export function Menu(props: MenuProps) {
   return (
-    <div className={styles.menu}>
+    <div className="flex justify-center">
       {props.children}
     </div>
   );

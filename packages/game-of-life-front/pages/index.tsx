@@ -7,6 +7,7 @@ import { Board } from '../interfaces/interfaces';
 import Button from '../components/button/button';
 import produce from 'immer';
 import Menu from '../components/menu/menu';
+import { Header } from '../components/Header';
 
 const isBoardEmpty = (board: Board): boolean => {
   return board
@@ -81,8 +82,6 @@ export function Index() {
     );
   };
 
-
-
   const addDefaultPattern = () => {
     setCell(2, 1);
     setCell(2, 2);
@@ -98,59 +97,42 @@ export function Index() {
   };
 
   return (
-    <div className={styles.page}>
-      <h1 className="text-amber-700 font-extrabold"><span>game of life</span>
-      <div className={styles.inputCnt}>
-          <label className={styles.label} htmlFor="sizeInput">
-            BOARD SIZE:
-          </label>
+    <div className="container mx-auto max-w-md flex flex-col items-center">
+      <Header />
+      <div className="m-2">
+        <label htmlFor="sizeInput">BOARD SIZE:</label>
         <input
-            id="sizeInput"
-            type="number"
-            placeholder="10"
-            min="3"
-            max="15"
-            className={styles.input}
-            onChange={(e) => updateBoardSize(Number(e.target.value))}
-            disabled={hasStarted}
-          />
-            <small className={styles.message}>
+          id="sizeInput"
+          type="number"
+          placeholder="10"
+          min="3"
+          max="15"
+          onChange={(e) => updateBoardSize(Number(e.target.value))}
+          disabled={hasStarted}
+        />
+        <small className={styles.message}>
           {wrongBoardSize
             ? 'please provide a number in the range from 3 to 15'
             : ''}
         </small>
-          </div>
-        </h1>
-      <div className={styles.wrapper}>
-        <div data-testid="board">
-          {board?.map((row: number[], rowIndex) => {
-            return (
-              <div key={rowIndex} className={styles.row}>
-                {row.map((cell: number, colIndex) => {
-                  return (
-                    <div key={`${rowIndex}-${colIndex}`}>
-                      <Cell
-                        isActive={cell ? true : false}
-                        // eslint-disable-next-line @typescript-eslint/no-empty-function
-                        setCell={hasStarted ? () => {} : setCell}
-                        row={rowIndex}
-                        col={colIndex}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
       </div>
-      <nav className={styles.nav}>
+
+      <div className="board">
+        {board?.map((row: number[], rowIndex) => {
+          return (
+            <div className="row flex" key={rowIndex}>
+              {row.map((cell, colIndex) => {
+                return (
+                  <Cell isActive={!!cell} key={`${rowIndex}-${colIndex}`} />
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      <nav>
         <Menu>
-          {/* {!hasStarted && (
-            <h3 className={styles.info}>
-              create your starting pattern or use default
-            </h3>
-          )} */}
           {hasStarted && (
             <>
               <Button onClick={tick} label={'tick'} />
@@ -167,9 +149,7 @@ export function Index() {
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
             <Button onClick={() => {}} label={'restart'} />
           </a>
-
         </Menu>
-
       </nav>
     </div>
   );
