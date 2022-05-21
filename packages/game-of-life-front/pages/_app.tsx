@@ -8,7 +8,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Welcome to game-of-life-front!</title>
       </Head>
-      <main className="app">
+      <main className="bg-gray-100 min-h-screen">
         <Component {...pageProps} />
       </main>
     </>
