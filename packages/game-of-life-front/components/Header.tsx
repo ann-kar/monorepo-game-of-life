@@ -1,3 +1,3 @@
 export const Header = () => {
-  return <h1 className="text-xl text-slate-900 m-8 uppercase">game of life</h1>;
+  return <h1 className="text-4xl font-extrabold text-slate-700 m-8 uppercase">game of life</h1>;
 };
