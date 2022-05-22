@@ -1,4 +1,4 @@
-import { ICell } from '../../interfaces/interfaces';
+import { ICell } from '../interfaces/interfaces';
 import { useState } from 'react';
 
 export function Cell({ isActive, row, col, handleCellClick }: ICell) {

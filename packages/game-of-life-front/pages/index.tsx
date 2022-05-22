@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import produce from 'immer';
 
-import Cell from '../components/cell/cell';
+import Cell from '../components/Cell';
 import { Api } from '../services/services';
 import { Board, Coordinates } from '../interfaces/interfaces';
 import Button from '../components/Button';
