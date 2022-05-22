@@ -96,7 +96,7 @@ export function Index() {
           {board &&
             board.map((row: number[], rowIndex) => {
               return (
-                <div className="row flex" key={rowIndex}>
+                <div className={`row flex ${hasStarted && 'pointer-events-none'}`} key={rowIndex}>
                   {row.map((cell, colIndex) => {
                     return (
                       <Cell
