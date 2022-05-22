@@ -5,7 +5,6 @@ import Cell from '../components/Cell';
 import { Api } from '../services/services';
 import { Board, Coordinates } from '../interfaces/interfaces';
 import Button from '../components/Button';
-import Menu from '../components/menu/menu';
 import { Header } from '../components/Header';
 import { SizeInput } from '../components/SizeInput';
 import { isSizeValid, isBoardEmpty } from '../utils/utils';
@@ -25,11 +24,11 @@ export function Index() {
   }, [boardSize]);
 
   useEffect(() => {
-    if (prevBoard && (JSON.stringify(board) === JSON.stringify(prevBoard))) {
+    if (prevBoard && JSON.stringify(board) === JSON.stringify(prevBoard)) {
       setIsOver(true);
       setIsAutoplayOn(false);
     }
-  },[board, prevBoard])
+  }, [board, prevBoard]);
 
   const startGame = async () => {
     if (isSizeValid(boardSize)) {
@@ -103,7 +102,9 @@ export function Index() {
             board.map((row: number[], rowIndex) => {
               return (
                 <div
-                  className={`row flex ${hasStarted && 'pointer-events-none'} ${isOver && 'grayscale'}`}
+                  className={`row flex ${hasStarted && 'pointer-events-none'} ${
+                    isOver && 'grayscale'
+                  }`}
                   key={rowIndex}
                 >
                   {row.map((cell, colIndex) => {
@@ -122,29 +123,24 @@ export function Index() {
             })}
         </div>
       </div>
-      <nav className="mt-8 h-40">
-        <Menu>
-          {hasStarted && (
-            <>
-              <Button onClick={tick} label={'next'} />
-              <Button onClick={autoplay} label={'autoplay'} />
-            </>
-          )}
-          {!hasStarted && (
-            <>
-              <Button onClick={startGame} label={'play'} />
-              <Button
-                onClick={addDefaultPattern}
-                label={'add default pattern'}
-              />
-            </>
-          )}
-          <a href="./">
-            {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-            <Button onClick={() => {}} label={'restart'} />
-          </a>
-          <SizeInput setBoardSize={setBoardSize} hasStarted={hasStarted} />
-        </Menu>
+      <nav className="h-32 flex items-center justify-center">
+        {hasStarted && (
+          <>
+            <Button onClick={tick} label={'next'} />
+            <Button onClick={autoplay} label={'autoplay'} />
+          </>
+        )}
+        {!hasStarted && (
+          <>
+            <Button onClick={startGame} label={'play'} />
+            <Button onClick={addDefaultPattern} label={'add default pattern'} />
+          </>
+        )}
+        <a href="./">
+          {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+          <Button onClick={() => {}} label={'restart'} />
+        </a>
+        <SizeInput setBoardSize={setBoardSize} hasStarted={hasStarted} />
       </nav>
     </div>
   );
