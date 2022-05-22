@@ -13,7 +13,7 @@ export function Cell({ isActive, row, col, handleCellClick }: ICell) {
     <div
       data-testid="cell"
       onClick={handleClick}
-      className={`w-10 h-10 border border-white ${
+      className={`w-10 h-10 max-w-[10vw] max-h-[10vw] border border-white ${
         (isActive || isClicked) ? 'bg-emerald-500' : 'bg-gray-100'
       }`}
     />
