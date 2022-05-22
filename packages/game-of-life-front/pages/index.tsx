@@ -12,15 +12,24 @@ import { isSizeValid, isBoardEmpty } from '../utils/utils';
 
 export function Index() {
   const [board, setBoard] = useState<Board>();
+  const [prevBoard, setPrevBoard] = useState<Board>();
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const [isAutoplayOn, setIsAutoplayOn] = useState<boolean>(false);
   const [boardId, setBoardId] = useState<string>();
   const [boardSize, setBoardSize] = useState<number>(10);
+  const [isOver, setIsOver] = useState<boolean>(false);
 
   useEffect(() => {
     if (isSizeValid(boardSize)) displayBoard(boardSize);
   }, [boardSize]);
+
+  useEffect(() => {
+    if (prevBoard && (JSON.stringify(board) === JSON.stringify(prevBoard))) {
+      setIsOver(true);
+      setIsAutoplayOn(false);
+    }
+  },[board, prevBoard])
 
   const startGame = async () => {
     if (isSizeValid(boardSize)) {
@@ -30,8 +39,10 @@ export function Index() {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const tick = async () => {
     const res = await Api.sendTick(boardId);
+    setPrevBoard(board);
     setBoard(res.board);
   };
 
@@ -78,10 +89,10 @@ export function Index() {
     if (isAutoplayOn && !isEmpty) {
       const interval = setInterval(() => {
         tick();
-      }, 100);
+      }, 200);
       return () => clearInterval(interval);
     }
-  }, [isAutoplayOn, isEmpty]);
+  }, [isAutoplayOn, isEmpty, tick]);
 
   return (
     <div className="container h-screen mx-auto max-w-3xl flex flex-col items-center">
@@ -92,7 +103,7 @@ export function Index() {
             board.map((row: number[], rowIndex) => {
               return (
                 <div
-                  className={`row flex ${hasStarted && 'pointer-events-none'}`}
+                  className={`row flex ${hasStarted && 'pointer-events-none'} ${isOver && 'grayscale'}`}
                   key={rowIndex}
                 >
                   {row.map((cell, colIndex) => {
