@@ -8,14 +8,7 @@ import Button from '../components/Button';
 import Menu from '../components/menu/menu';
 import { Header } from '../components/Header';
 import { SizeInput } from '../components/SizeInput';
-
-const isBoardEmpty = (board: Board): boolean => {
-  return board
-    .map((row) => {
-      return row.every((cell) => cell === 0);
-    })
-    .every((result) => result === true);
-};
+import { isSizeValid, isBoardEmpty } from '../utils/utils';
 
 export function Index() {
   const [board, setBoard] = useState<Board>();
@@ -26,13 +19,15 @@ export function Index() {
   const [boardSize, setBoardSize] = useState<number>(10);
 
   useEffect(() => {
-    displayBoard(boardSize);
+    if (isSizeValid(boardSize)) displayBoard(boardSize);
   }, [boardSize]);
 
   const startGame = async () => {
-    const res = await Api.sendBoard(board);
-    setBoardId(res.id);
-    setHasStarted(true);
+    if (isSizeValid(boardSize)) {
+      const res = await Api.sendBoard(board);
+      setBoardId(res.id);
+      setHasStarted(true);
+    }
   };
 
   const tick = async () => {
@@ -96,7 +91,10 @@ export function Index() {
           {board &&
             board.map((row: number[], rowIndex) => {
               return (
-                <div className={`row flex ${hasStarted && 'pointer-events-none'}`} key={rowIndex}>
+                <div
+                  className={`row flex ${hasStarted && 'pointer-events-none'}`}
+                  key={rowIndex}
+                >
                   {row.map((cell, colIndex) => {
                     return (
                       <Cell
