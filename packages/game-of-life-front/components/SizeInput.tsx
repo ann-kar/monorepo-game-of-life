@@ -3,10 +3,10 @@ import { isSizeValid } from '../utils/utils';
 
 interface SizeInputProps {
   setBoardSize: Dispatch<SetStateAction<number>>;
-  hasStarted: boolean;
+  isDisabled: boolean;
 }
 
-export const SizeInput = ({ setBoardSize, hasStarted }: SizeInputProps) => {
+export const SizeInput = ({ setBoardSize, isDisabled }: SizeInputProps) => {
   const [isValid, setIsValid] = useState<boolean>(true);
 
   const handleChange = (size: number) => {
@@ -32,10 +32,10 @@ export const SizeInput = ({ setBoardSize, hasStarted }: SizeInputProps) => {
         min="3"
         max="10"
         onChange={(e) => handleChange(Number(e.target.value))}
-        disabled={hasStarted}
+        disabled={isDisabled}
       />
       <small className="absolute top-20 right-0 font-bold w-[400%] text-right text-[#FF896F]">
-        {!isValid ? 'please provide a number from 3 to 10' : ''}
+        {!isValid ? 'please provide a number from 5 to 10' : ''}
       </small>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Board } from '@gol-monorepo/interfaces';
 
 export const isSizeValid = (size: number) => {
-  return size < 11 && size > 2;
+  return size < 11 && size > 4;
 };
 
 export const isBoardEmpty = (board: Board): boolean => {
