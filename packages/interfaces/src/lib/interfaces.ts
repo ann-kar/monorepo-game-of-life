@@ -12,18 +12,32 @@ export interface IRequestTick {
 
 export interface IResponseTick {
   id: string;
-  board: number[][];
+  board: Board;
 }
 
 export interface IRequestStart {
-  board: number[][];
+  board: Board;
 }
 
 export interface IResponseStart {
   id: string;
-  board: number[][];
+  board: Board;
 }
 
 export interface IResponseBoard {
-  board: number[][];
+  board: Board;
+}
+
+export type Board = number[][];
+
+export interface ICoordinates {
+  row: number;
+  col: number;
+};
+
+export interface ICell {
+  isActive: boolean;
+  row: number;
+  col: number;
+  handleCellClick: (e: ICoordinates) => void;
 }
