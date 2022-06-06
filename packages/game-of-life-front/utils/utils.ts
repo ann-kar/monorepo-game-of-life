@@ -1,4 +1,4 @@
-import { Board } from "../interfaces/interfaces";
+import { Board } from '@gol-monorepo/interfaces';
 
 export const isSizeValid = (size: number) => {
   return size < 11 && size > 2;
