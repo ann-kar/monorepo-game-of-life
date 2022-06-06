@@ -3,8 +3,6 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../app/app.module';
 
-// random comment
-
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 

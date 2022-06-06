@@ -2,8 +2,8 @@
   "version": 2,
   "projects": {
     "backend": "packages/backend",
-    "game-of-life-algr": "packages/game-of-life-algr",
+    "game-of-life": "packages/game-of-life",
     "game-of-life-front": "packages/game-of-life-front",
-    "game-of-life-front-e2e": "packages/game-of-life-front-e2e"
+    "interfaces": "packages/interfaces"
   }
 }
