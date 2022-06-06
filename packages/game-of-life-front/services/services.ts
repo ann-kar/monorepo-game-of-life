@@ -5,8 +5,7 @@ import {
   Board,
 } from '@gol-monorepo/interfaces';
 
-// const url = "http://localhost:3333/api";
-const url = 'https://gol-backend.herokuapp.com/api';
+const url = 'https://game-of-life-backend-app.herokuapp.com/api'
 
 export class Api {
   static async sendBoard(data: Board): Promise<IResponseStart> {
