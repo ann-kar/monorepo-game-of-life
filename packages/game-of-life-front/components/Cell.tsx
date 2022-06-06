@@ -1,4 +1,4 @@
-import { ICell } from '../interfaces/interfaces';
+import { ICell } from '@gol-monorepo/interfaces';
 import { useState } from 'react';
 
 export function Cell({ isActive, row, col, handleCellClick }: ICell) {
@@ -14,7 +14,7 @@ export function Cell({ isActive, row, col, handleCellClick }: ICell) {
       data-testid="cell"
       onClick={handleClick}
       className={`w-10 h-10 max-w-[10vw] max-h-[10vw] border border-white ${
-        (isActive || isClicked) ? 'bg-emerald-500' : 'bg-gray-100'
+        isActive || isClicked ? 'bg-emerald-500' : 'bg-gray-100'
       }`}
     />
   );

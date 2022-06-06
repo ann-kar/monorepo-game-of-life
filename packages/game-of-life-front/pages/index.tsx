@@ -3,7 +3,7 @@ import produce from 'immer';
 
 import Cell from '../components/Cell';
 import { Api } from '../services/services';
-import { Board, Coordinates } from '../interfaces/interfaces';
+import { ICoordinates, Board } from '@gol-monorepo/interfaces';
 import Button from '../components/Button';
 import { Header } from '../components/Header';
 import { SizeInput } from '../components/SizeInput';
@@ -33,6 +33,7 @@ export function Index() {
   const startGame = async () => {
     if (isSizeValid(boardSize)) {
       const res = await Api.sendBoard(board);
+      setBoard(res.board);
       setBoardId(res.id);
       setHasStarted(true);
     }
@@ -56,7 +57,7 @@ export function Index() {
     }
   }, [board]);
 
-  const handleCellClick = (c: Coordinates) => {
+  const handleCellClick = (c: ICoordinates) => {
     if (!hasStarted) {
       setBoard(
         produce((draft) => {
@@ -67,16 +68,21 @@ export function Index() {
   };
 
   const addDefaultPattern = () => {
+    const newBoard = new Array(boardSize)
+      .fill(0)
+      .map((_) => Array(boardSize).fill(0));
+    const leftTop = Math.floor((boardSize - 5) / 2);
     if (!hasStarted) {
-      setBoard(
-        produce((draft) => {
-          draft[2][1] = 1;
-          draft[2][1] = 1;
-          draft[2][2] = 1;
-          draft[0][2] = 1;
-          draft[1][2] = 1;
-        })
-      );
+      newBoard[leftTop][leftTop + 1] = 1;
+      newBoard[leftTop + 1][leftTop + 1] = 1;
+      newBoard[leftTop + 1][leftTop + 2] = 1;
+      newBoard[leftTop + 2][leftTop + 1] = 1;
+      newBoard[leftTop + 2][leftTop + 2] = 1;
+      newBoard[leftTop + 2][leftTop + 3] = 1;
+      newBoard[leftTop + 3][leftTop + 1] = 1;
+      newBoard[leftTop + 3][leftTop + 2] = 1;
+      newBoard[leftTop + 4][leftTop + 1] = 1;
+      setBoard(newBoard);
     }
   };
 
